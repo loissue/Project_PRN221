@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PRN221_SE1729_Group11_Project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1600">
     <Grid>
+        <ListView  Margin="522,10,10,10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="431,726,0,0" VerticalAlignment="Top"/>
+        <Button Content="Edit" HorizontalAlignment="Left" Margin="151,731,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="228,726,0,0" VerticalAlignment="Top"/>
+        <Button Content="Refresh" HorizontalAlignment="Left" Margin="339,726,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,54,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,102,0,0" TextWrapping="Wrap" Text="Size" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,150,0,0" TextWrapping="Wrap" Text="Price" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,208,0,0" TextWrapping="Wrap" Text="Rent Price" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,260,0,0" TextWrapping="Wrap" Text="Number of times rented" VerticalAlignment="Top" Width="211"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,305,0,0" TextWrapping="Wrap" Text="Movie Relate" VerticalAlignment="Top" Width="211"/>
 
     </Grid>
 </Window>
