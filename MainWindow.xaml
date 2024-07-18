@@ -10,27 +10,47 @@
         <Style TargetType="TextBox">
             <Setter Property="Width" Value="300px"></Setter>
             <Setter Property="Height" Value="30px"></Setter>
-            
         </Style>
     </Window.Resources>
     <Grid>
-        <ListView  Margin="522,10,10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="500"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0">
+            <Label Foreground="Red" FontWeight="DemiBold" FontSize="20"
+                   Content="Manage Booking"/>
+            <Label Content="Name"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" />
+            <Label Content="Size"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" />
+            <Label Content="Price"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+            <Label Content="Rent Price"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top"/>
+            <Label Content="Number of times rented"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" />
+            <Label Content="Movie Relate"/>
+            <TextBox HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="Add" Margin="10" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="80"/>
+                <Button Content="Edit" Margin="10" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="80"/>
+                <Button Content="Delete" Margin="10" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="80"/>
+                <Button Content="Refresh" Margin="10" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="80"/>
+            </StackPanel>
+        </StackPanel>
+        <ListView Grid.Column="1">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn Header="ID" Width="100"/>
+                    <GridViewColumn Header="Name" Width="200"/>
+                    <GridViewColumn Header="Price" Width="100"/>
+                    <GridViewColumn Header="RentPrice" Width="100"/>
+                    <GridViewColumn Header="RentTime" Width="150"/>
+                    <GridViewColumn Header="Relate" Width="150"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="431,726,0,0" VerticalAlignment="Top"/>
-        <Button Content="Edit" HorizontalAlignment="Left" Margin="151,731,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="228,726,0,0" VerticalAlignment="Top"/>
-        <Button Content="Refresh" HorizontalAlignment="Left" Margin="339,726,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="55,54,0,0" TextWrapping="Wrap" Text="name" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Margin="55,102,0,0" TextWrapping="Wrap" Text="Size" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Margin="55,150,0,0" TextWrapping="Wrap" Text="Price" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="55,208,0,0" TextWrapping="Wrap" Text="Rent Price" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="55,260,0,0" TextWrapping="Wrap" Text="Number of times rented" VerticalAlignment="Top" />
-        <TextBox HorizontalAlignment="Left" Margin="55,305,0,0" TextWrapping="Wrap" Text="Movie Relate" VerticalAlignment="Top" />
 
     </Grid>
 </Window>

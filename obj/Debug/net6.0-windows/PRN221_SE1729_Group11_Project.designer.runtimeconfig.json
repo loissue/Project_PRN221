@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\Truong Quang Loc\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Truong Quang Loc\\.nuget\\packages",
+      "C:\\Users\\HTC\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\HTC\\.nuget\\packages",
       "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
     ],
     "configProperties": {
