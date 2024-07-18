@@ -1,20 +1,20 @@
 ﻿PRN221_SE1729_Group11_Project
-1.0.0.0
+
 
 winexe
 C#
 .cs
-E:\PRN221\Project_PRN221\obj\Debug\net6.0-windows\
+E:\PRN221\Project_PRN221\obj\Release\net6.0-windows\
 PRN221_SE1729_Group11_Project
 none
 false
-TRACE;DEBUG;NET;NET6_0;NETCOREAPP
+TRACE;RELEASE;NET;NET6_0;NETCOREAPP
 E:\PRN221\Project_PRN221\App.xaml
 11407045341
 
-6-130715061
+4244531333
 194-1701117732
 MainWindow.xaml;
 
-False
+True
 
