@@ -7,7 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="ManageBooking.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ManageCustomer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ManageProducts.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ManageBooking.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ManageCustomer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ManageProducts.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

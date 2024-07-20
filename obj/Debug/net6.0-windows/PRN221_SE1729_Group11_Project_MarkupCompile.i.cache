@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 D:\FPTU\HKVII\PRN221\final\Project_PRN221\PRN221_SE1729_Group11_Project\PRN221_SE1729_Group11_Project\App.xaml
-11407045341
+41304551790
 
-6-130715061
-194726069201
-MainWindow.xaml;
+13-1752685747
+2261594420712
+MainWindow.xaml;ManageBooking.xaml;ManageCustomer.xaml;ManageProducts.xaml;
 
-False
+True
 
