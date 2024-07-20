@@ -19,6 +19,7 @@ namespace PRN221_SE1729_Group11_Project
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.NavigationService.Navigate(new ManageProducts());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
