@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace PRN221_SE1729_Group11_Project.Models
 {
@@ -24,7 +25,10 @@ namespace PRN221_SE1729_Group11_Project.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=PRN_PROJECT;Integrated Security=True;TrustServerCertificate=true");
+                var conf = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+                optionsBuilder.UseSqlServer(conf.GetConnectionString("DefaultConnection"));
             }
         }
 

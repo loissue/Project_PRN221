@@ -12,28 +12,55 @@
             <Setter Property="Width" Value="300px"/>
             <Setter Property="Height" Value="30px"/>
         </Style>
+        <Style TargetType="Label">
+            <Setter Property="Width" Value="100"></Setter>
+        </Style>
     </Page.Resources>
     <Grid Margin="0,0,-179,-33">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="500"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="698">
-            <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Booking"/>
-            <Label Content="Customer ID"/>
-            <TextBox x:Name="txtCustomerId" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
-            <Label Content="Product ID"/>
-            <TextBox x:Name="txtProductId" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
-            <Label Content="Rent Date"/>
-            <DatePicker x:Name="dpRentDate" HorizontalAlignment="Left" Margin="10"/>
-            <Label Content="Pay Status"/>
-            <TextBox x:Name="txtPayStatus" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
-            <Label Content="Booking Status"/>
-            <TextBox x:Name="txtBookingStatus" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
-            <Label Content="Pay Proof"/>
-            <TextBox x:Name="txtPayProof" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
-            <Label Content="Note"/>
-            <TextBox x:Name="txtNote" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="589">
+            <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Booking" Width="698"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Customer"/>
+                <ComboBox x:Name="cbCustomer" DisplayMemberPath="CustomerName" SelectedValuePath="Cid" Width="299" Height="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Search Customer"/>
+                <TextBox x:Name="txtSearchCustomer" Width="300" Height="30" TextChanged="txtSearchCustomer_TextChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Product"/>
+                <ComboBox x:Name="cbProduct" DisplayMemberPath="ProductName" SelectedValuePath="Pid" Width="300" Height="30"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Search Product"/>
+                <TextBox x:Name="txtSearchProduct" Width="300" Height="30" TextChanged="txtSearchProduct_TextChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Rent Date"/>
+                <DatePicker x:Name="dpRentDate" HorizontalAlignment="Left" Margin="10"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Pay Status"/>
+                <CheckBox x:Name="chkPayStatus" Content="Paid" HorizontalAlignment="Left" Margin="10"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Booking Status" Width="110"/>
+                <RadioButton x:Name="rbNotYet" Content="Not Yet" GroupName="BookingStatus" IsChecked="True"/>
+                <RadioButton x:Name="rbBooking" Content="Booking" GroupName="BookingStatus"/>
+                <RadioButton x:Name="rbDone" Content="Done" GroupName="BookingStatus"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Pay Proof"/>
+                <TextBox x:Name="txtPayProof" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Label Content="Note" Width="100"/>
+                <TextBox x:Name="txtNote" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button x:Name="btnAdd" Content="Add" Margin="10" Width="80" Click="btnAdd_Click"/>
                 <Button x:Name="btnEdit" Content="Edit" Margin="10" Width="80" Click="btnEdit_Click"/>
@@ -43,12 +70,11 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button x:Name="btnNewCustomer" Content="Customers" Margin="10" Width="80" Click="btnNewCustomer_Click" />
                 <Button x:Name="btnProduct" Content="Products" Margin="10" Width="80" Click="btnProduct_Click" />
-                <Button x:Name="btnExport" Content="Export" Margin="10" Width="80" />
-                <Button x:Name="btnImport" Content="Import" Margin="10" Width="80" />
+                <Button x:Name="btnExport" Content="Export" Margin="10" Width="80" Click="btnExport_Click" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="10" Width="563">
                 <Label Content="Search"/>
-                <ComboBox x:Name="cbSearchField" Margin="10" SelectionChanged="cbSearchField_SelectionChanged" Width="167">
+                <ComboBox x:Name="cbSearchField" Margin="10" SelectionChanged="cbSearchField_SelectionChanged" Width="100">
                     <ComboBoxItem Content="ID"/>
                     <ComboBoxItem Content="Customer ID"/>
                     <ComboBoxItem Content="Product ID"/>
@@ -58,11 +84,11 @@
                     <ComboBoxItem Content="Pay Proof"/>
                     <ComboBoxItem Content="Note"/>
                 </ComboBox>
-                <TextBox x:Name="txtSearch" Margin="10" TextChanged="txtSearch_TextChanged" Width="372"/>
+                <TextBox x:Name="txtSearch" Margin="10" TextChanged="txtSearch_TextChanged" Width="290"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10" Height="53">
                 <Label Content="Sort By"/>
-                <ComboBox x:Name="cbSortField" Margin="10" SelectionChanged="cbSortField_SelectionChanged" Width="169">
+                <ComboBox x:Name="cbSortField" Margin="10" SelectionChanged="cbSortField_SelectionChanged" Width="100">
                     <ComboBoxItem Content="ID"/>
                     <ComboBoxItem Content="Customer ID"/>
                     <ComboBoxItem Content="Product ID"/>
@@ -79,16 +105,65 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <ListView x:Name="lvBookings" SelectionChanged="lvBookings_SelectionChanged" Grid.ColumnSpan="2" Margin="698,0,0,0">
+        <ListView x:Name="lvBookings" SelectionChanged="lvBookings_SelectionChanged" Grid.ColumnSpan="2" Margin="594,0,0,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding BookingId}"/>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding BookingId}"/>
                     <GridViewColumn Header="Customer ID" Width="100" DisplayMemberBinding="{Binding Cid}"/>
                     <GridViewColumn Header="Product ID" Width="100" DisplayMemberBinding="{Binding Pid}"/>
-                    <GridViewColumn Header="Rent Date" Width="150" DisplayMemberBinding="{Binding RentDate}"/>
-                    <GridViewColumn Header="Pay Status" Width="100" DisplayMemberBinding="{Binding PayStatus}"/>
-                    <GridViewColumn Header="Booking Status" Width="100" DisplayMemberBinding="{Binding BookingStatus}"/>
-                    <GridViewColumn Header="Pay Proof" Width="200" DisplayMemberBinding="{Binding PayProof}"/>
+                    <GridViewColumn Header="RentDate" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RentDate, StringFormat={}{0:yyyy-MM-dd}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="PayStatus" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="payStatusTextBlock">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PayStatus}" Value="0">
+                                                    <Setter Property="Text" Value="Unpaid"/>
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PayStatus}" Value="1">
+                                                    <Setter Property="Text" Value="Paid"/>
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Booking Status" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock x:Name="payStatusTextBlock">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding BookingStatus}" Value="0">
+                                                    <Setter Property="Text" Value="Not Yet"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding BookingStatus}" Value="1">
+                                                    <Setter Property="Text" Value="Booking"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding BookingStatus}" Value="2">
+                                                    <Setter Property="Text" Value="Done"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Pay Proof" Width="100" DisplayMemberBinding="{Binding PayProof}"/>
                     <GridViewColumn Header="Note" Width="200" DisplayMemberBinding="{Binding Note}"/>
                 </GridView>
             </ListView.View>

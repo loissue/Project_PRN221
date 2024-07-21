@@ -1,7 +1,10 @@
-﻿using PRN221_SE1729_Group11_Project.Models;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
+using PRN221_SE1729_Group11_Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,12 +95,30 @@ namespace PRN221_SE1729_Group11_Project
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_context == null) return;
+
             if (lvProducts.SelectedItem is Product selectedProduct)
             {
-                _context.Products.Remove(selectedProduct);
-                _context.SaveChanges();
-                Products.Remove(selectedProduct);
-                ClearInputs();
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this product? \n All of this product booking will also be delete", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        // Delete associated bookings
+                        var associatedBookings = _context.Bookings.Where(b => b.Pid == selectedProduct.Pid).ToList();
+                        _context.Bookings.RemoveRange(associatedBookings);
+
+                        // Delete the product
+                        _context.Products.Remove(selectedProduct);
+                        _context.SaveChanges();
+                        Products.Remove(selectedProduct);
+                        ClearInputs();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to delete product: " + ex.Message);
+                    }
+                }
             }
         }
 
@@ -123,7 +144,7 @@ namespace PRN221_SE1729_Group11_Project
             txtProductName.Clear();
             txtPrice.Clear();
             txtRentPrice.Clear();
-            txtRentedTime.Clear();
+            txtRentedTime.Text = "0";
             txtRelate.Clear();
         }
 
@@ -254,6 +275,56 @@ namespace PRN221_SE1729_Group11_Project
         private void btnCustomer_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ManageCustomer());
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            var products = lvProducts.ItemsSource as IEnumerable<Product>;
+            if (products == null || !products.Any())
+            {
+                MessageBox.Show("No data to export.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                Title = "Save an Excel File"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Products");
+
+                    worksheet.Cells[1, 1].Value = "PID";
+                    worksheet.Cells[1, 2].Value = "ProductName";
+                    worksheet.Cells[1, 3].Value = "Price";
+                    worksheet.Cells[1, 4].Value = "RentPrice";
+                    worksheet.Cells[1, 5].Value = "RentedTime";
+                    worksheet.Cells[1, 6].Value = "Relate";
+
+                    int row = 2;
+                    foreach (var product in products)
+                    {
+                        worksheet.Cells[row, 1].Value = product.Pid;
+                        worksheet.Cells[row, 2].Value = product.ProductName;
+                        worksheet.Cells[row, 3].Value = product.Price;
+                        worksheet.Cells[row, 4].Value = product.RentPrice;
+                        worksheet.Cells[row, 5].Value = product.RentedTime;
+                        worksheet.Cells[row, 6].Value = product.Relate;
+                        row++;
+                    }
+
+                    var fileInfo = new FileInfo(saveFileDialog.FileName);
+                    package.SaveAs(fileInfo);
+
+                    MessageBox.Show("Data exported successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
     }
 

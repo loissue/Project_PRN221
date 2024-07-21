@@ -1,7 +1,10 @@
-﻿using PRN221_SE1729_Group11_Project.Models;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
+using PRN221_SE1729_Group11_Project.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,16 +82,19 @@ namespace PRN221_SE1729_Group11_Project
                     Dob = dpDob.SelectedDate,
                     IdentificationCard = txtIdentificationCard.Text,
                     Address = txtAddress.Text,
-                    NumberOfOrder = int.TryParse(txtNumberOfOrders.Text, out int numberOfOrders) ? numberOfOrders : (int?)null
+                    NumberOfOrder = int.TryParse(txtNumberOfOrders.Text, out int numberOfOrders) ? numberOfOrders : (int?)null,
+                    PhoneNumber = txtPhoneNumber.Text,
                 };
 
                 try
                 {
                     _context.Customers.Add(newCustomer);
                     _context.SaveChanges();
+                    lvCustomers.Items.Refresh();
                     Customers.Add(newCustomer);
                     ClearInputs();
                 }
+
                 catch (Exception ex)
                 {
                     MessageBox.Show("Failed to add customer: " + ex.Message);
@@ -109,7 +115,7 @@ namespace PRN221_SE1729_Group11_Project
                     selectedCustomer.IdentificationCard = txtIdentificationCard.Text;
                     selectedCustomer.Address = txtAddress.Text;
                     selectedCustomer.NumberOfOrder = int.TryParse(txtNumberOfOrders.Text, out int numberOfOrders) ? numberOfOrders : (int?)null;
-
+                    selectedCustomer.PhoneNumber = txtPhoneNumber.Text;
                     try
                     {
                         _context.Customers.Update(selectedCustomer);
@@ -131,16 +137,25 @@ namespace PRN221_SE1729_Group11_Project
 
             if (lvCustomers.SelectedItem is Customer selectedCustomer)
             {
-                try
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this customer? \n All of his/her bookings will also be delete .", "Delete Confirmation", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
                 {
-                    _context.Customers.Remove(selectedCustomer);
-                    _context.SaveChanges();
-                    Customers.Remove(selectedCustomer);
-                    ClearInputs();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Failed to delete customer: " + ex.Message);
+                    try
+                    {
+                        // Delete associated bookings
+                        var associatedBookings = _context.Bookings.Where(b => b.Cid == selectedCustomer.Cid).ToList();
+                        _context.Bookings.RemoveRange(associatedBookings);
+
+                        // Delete the customer
+                        _context.Customers.Remove(selectedCustomer);
+                        _context.SaveChanges();
+                        Customers.Remove(selectedCustomer);
+                        ClearInputs();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to delete customer: " + ex.Message);
+                    }
                 }
             }
         }
@@ -161,6 +176,7 @@ namespace PRN221_SE1729_Group11_Project
                 txtIdentificationCard.Text = selectedCustomer.IdentificationCard;
                 txtAddress.Text = selectedCustomer.Address;
                 txtNumberOfOrders.Text = selectedCustomer.NumberOfOrder?.ToString();
+                txtPhoneNumber.Text = selectedCustomer.PhoneNumber;
             }
         }
 
@@ -258,10 +274,30 @@ namespace PRN221_SE1729_Group11_Project
 
         private bool ValidateInputs()
         {
-            return !string.IsNullOrEmpty(txtCustomerName.Text) &&
-                   dpDob.SelectedDate != null &&
-                   !string.IsNullOrEmpty(txtIdentificationCard.Text) &&
-                   !string.IsNullOrEmpty(txtAddress.Text);
+            if (string.IsNullOrWhiteSpace(txtCustomerName.Text))
+            {
+                MessageBox.Show("Customer Name cannot be empty.");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtPhoneNumber.Text) || txtPhoneNumber.Text.Length<10 || txtPhoneNumber.Text.Length>11)
+            {
+                MessageBox.Show("Wrong Phone Number format, or phone number is empty.");
+                return false;
+            }
+            if(dpDob.SelectedDate is null)
+            {
+                MessageBox.Show("PLease choose dob.");
+                return false;
+            }
+            else
+            {
+                if (dpDob.SelectedDate > DateTime.Today)
+                {
+                    MessageBox.Show("Wrong Dob, this customer has'n been born yet.");
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void ClearInputs()
@@ -271,7 +307,8 @@ namespace PRN221_SE1729_Group11_Project
             dpDob.SelectedDate = null;
             txtIdentificationCard.Text = string.Empty;
             txtAddress.Text = string.Empty;
-            txtNumberOfOrders.Text = string.Empty;
+            txtNumberOfOrders.Text = "0";
+            txtPhoneNumber.Text = string.Empty;
         }
 
         private void InitializeComboBoxes()
@@ -289,6 +326,57 @@ namespace PRN221_SE1729_Group11_Project
         private void btnProducts_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ManageProducts());
+        }
+
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            var customers = lvCustomers.ItemsSource as IEnumerable<Customer>;
+            if (customers == null || !customers.Any())
+            {
+                MessageBox.Show("No data to export.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                Title = "Save an Excel File"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Customers");
+
+                    worksheet.Cells[1, 1].Value = "CID";
+                    worksheet.Cells[1, 2].Value = "CustomerName";
+                    worksheet.Cells[1, 3].Value = "Dob";
+                    worksheet.Cells[1, 4].Value = "IdentificationCard";
+                    worksheet.Cells[1, 5].Value = "Address";
+                    worksheet.Cells[1, 6].Value = "NumberOfOrder";
+                    worksheet.Cells[1, 7].Value = "PhoneNumber";
+                    int row = 2;
+                    foreach (var customer in customers)
+                    {
+                        worksheet.Cells[row, 1].Value = customer.Cid;
+                        worksheet.Cells[row, 2].Value = customer.CustomerName;
+                        worksheet.Cells[row, 3].Value = customer.Dob?.ToString("yyyy-MM-dd");
+                        worksheet.Cells[row, 4].Value = customer.IdentificationCard;
+                        worksheet.Cells[row, 5].Value = customer.Address;
+                        worksheet.Cells[row, 6].Value = customer.NumberOfOrder;
+                        worksheet.Cells[row, 7].Value = customer.PhoneNumber;
+                        row++;
+                    }
+
+                    var fileInfo = new FileInfo(saveFileDialog.FileName);
+                    package.SaveAs(fileInfo);
+
+                    MessageBox.Show("Data exported successfully.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
     }
 }

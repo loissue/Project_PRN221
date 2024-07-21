@@ -23,7 +23,7 @@
             <ColumnDefinition Width="1202*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="567" Grid.RowSpan="2">
-            <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Booking"/>
+            <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Products"/>
             <Label Content="Name"/>
             <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <Label Content="Price"/>
@@ -43,6 +43,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="btnBooking1" Content="Booking" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Click="btnBooking1_Click"/>
                 <Button x:Name="btnCustomer" Content="Customer" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Click="btnCustomer_Click"/>
+                <Button x:Name="btnExport" Content="Export" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Click="btnExport_Click" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="10">

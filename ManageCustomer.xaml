@@ -18,7 +18,7 @@
             <ColumnDefinition MinWidth="500"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="653">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="592">
             <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Customer"/>
             <Label Content="ID"/>
             <TextBox x:Name="txtCid" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" IsReadOnly="True"/>
@@ -31,7 +31,9 @@
             <Label Content="Address"/>
             <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
             <Label Content="Number of Orders"/>
-            <TextBox x:Name="txtNumberOfOrders" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
+            <TextBox x:Name="txtNumberOfOrders" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" IsReadOnly="True" Text="0"/>
+            <Label Content="Phone Number"/>
+            <TextBox x:Name="txtPhoneNumber" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button x:Name="btnAdd" Content="Add" Margin="10" Width="80" Click="btnAdd_Click"/>
                 <Button x:Name="btnEdit" Content="Edit" Margin="10" Width="80" Click="btnEdit_Click"/>
@@ -41,6 +43,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Button x:Name="btnProducts" Content="Products" Margin="10" Width="80" Click="btnProducts_Click"/>
                 <Button x:Name="btnBooking" Content="Booking" Margin="10" Width="80" Click="btnBooking_Click"/>
+                <Button x:Name="btnExport" Content="Export" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Click="btnExport_Click" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Label Content="Search by :"/>
@@ -52,9 +55,9 @@
                 </ComboBox>
                 <TextBox x:Name="txtSearch" Margin="10" TextChanged="txtSearch_TextChanged" Width="418"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="647">
-                <Label Content="Sort By"/>
-                <ComboBox x:Name="cbSortField" Margin="10" SelectionChanged="cbSortField_SelectionChanged" Width="146">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="591">
+                <Label Content="Sort By" Width="77"/>
+                <ComboBox x:Name="cbSortField" SelectionChanged="cbSortField_SelectionChanged" Width="124">
                     <ComboBoxItem Content="ID"/>
                     <ComboBoxItem Content="Name"/>
                     <ComboBoxItem Content="Date of Birth"/>
@@ -65,15 +68,22 @@
                 <RadioButton x:Name="rbDescending" Content="Descending" Margin="10" Checked="rbDescending_Checked"/>
             </StackPanel>
         </StackPanel>
-        <ListView x:Name="lvCustomers" SelectionChanged="lvCustomers_SelectionChanged" Grid.ColumnSpan="2" Margin="658,0,0,0">
+        <ListView x:Name="lvCustomers" SelectionChanged="lvCustomers_SelectionChanged" Grid.ColumnSpan="2" Margin="597,0,0,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Cid}"/>
-                    <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding CustomerName}"/>
-                    <GridViewColumn Header="Date of Birth" Width="150" DisplayMemberBinding="{Binding Dob}"/>
-                    <GridViewColumn Header="Identification Card" Width="200" DisplayMemberBinding="{Binding IdentificationCard}"/>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Cid}"/>
+                    <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding CustomerName}"/>
+                    <GridViewColumn Header="Dob" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Dob, StringFormat={}{0:yyyy-MM-dd}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Identification Card" Width="150" DisplayMemberBinding="{Binding IdentificationCard}"/>
                     <GridViewColumn Header="Address" Width="200" DisplayMemberBinding="{Binding Address}"/>
                     <GridViewColumn Header="Number of Orders" Width="150" DisplayMemberBinding="{Binding NumberOfOrder}"/>
+                    <GridViewColumn Header="Phone Number" Width="120" DisplayMemberBinding="{Binding PhoneNumber}"/>
                 </GridView>
             </ListView.View>
         </ListView>

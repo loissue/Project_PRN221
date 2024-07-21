@@ -16,7 +16,7 @@ namespace PRN221_SE1729_Group11_Project.Models
         public string? IdentificationCard { get; set; }
         public string? Address { get; set; }
         public int? NumberOfOrder { get; set; }
-
+        public string? PhoneNumber { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
     }
 }
