@@ -62,8 +62,15 @@ namespace PRN221_SE1729_Group11_Project
                 try
                 {
                     Bookings.Clear();
-                    var bookingsFromDb = _context.Bookings.ToList();
-                    foreach (var booking in bookingsFromDb)
+                var customers = _context.Customers.ToList();
+                cbCustomer.ItemsSource = customers;
+
+                var products = _context.Products.ToList();
+                cbProduct.ItemsSource = products;
+
+                var bookings = _context.Bookings.Include(b => b.CidNavigation).Include(b => b.PidNavigation).ToList();
+                lvBookings.ItemsSource = bookings;
+                foreach (var booking in bookings)
                     {
                         Bookings.Add(booking);
                     }

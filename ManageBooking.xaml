@@ -21,7 +21,7 @@
             <ColumnDefinition MinWidth="500"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="589">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" Width="491">
             <Label Foreground="Red" FontWeight="DemiBold" FontSize="20" Content="Manage Booking" Width="698"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <Label Content="Customer"/>
@@ -72,7 +72,7 @@
                 <Button x:Name="btnProduct" Content="Products" Margin="10" Width="80" Click="btnProduct_Click" />
                 <Button x:Name="btnExport" Content="Export" Margin="10" Width="80" Click="btnExport_Click" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="10" Width="563">
+            <StackPanel Orientation="Horizontal" Margin="10" Width="556">
                 <Label Content="Search"/>
                 <ComboBox x:Name="cbSearchField" Margin="10" SelectionChanged="cbSearchField_SelectionChanged" Width="100">
                     <ComboBoxItem Content="ID"/>
@@ -84,7 +84,7 @@
                     <ComboBoxItem Content="Pay Proof"/>
                     <ComboBoxItem Content="Note"/>
                 </ComboBox>
-                <TextBox x:Name="txtSearch" Margin="10" TextChanged="txtSearch_TextChanged" Width="290"/>
+                <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged" Width="290"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="10" Height="53">
                 <Label Content="Sort By"/>
@@ -105,12 +105,12 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <ListView x:Name="lvBookings" SelectionChanged="lvBookings_SelectionChanged" Grid.ColumnSpan="2" Margin="594,0,0,0">
+        <ListView x:Name="lvBookings" SelectionChanged="lvBookings_SelectionChanged" Grid.ColumnSpan="2" Margin="496,0,0,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding BookingId}"/>
-                    <GridViewColumn Header="Customer ID" Width="100" DisplayMemberBinding="{Binding Cid}"/>
-                    <GridViewColumn Header="Product ID" Width="100" DisplayMemberBinding="{Binding Pid}"/>
+                    <GridViewColumn Header="Customer" Width="150" DisplayMemberBinding="{Binding CidNavigation.CustomerName}" />
+                    <GridViewColumn Header="Product" Width="150" DisplayMemberBinding="{Binding PidNavigation.ProductName}" />
                     <GridViewColumn Header="RentDate" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
